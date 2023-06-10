@@ -108,11 +108,11 @@ const createPool = async () => {
 const ensureSchema = async pool => {
   // Wait for tables to be created (if they don't already exist).
   await pool.query(
-    `CREATE TABLE IF NOT EXISTS komentar
+    `CREATE TABLE IF NOT EXISTS votes
       ( vote_id SERIAL NOT NULL, time_cast timestamp NOT NULL,
-      candidate CHAR(6) NOT NULL, nama VARCHAR(255), komentar VARCHAR(255), PRIMARY KEY (vote_id) );`
+      candidate CHAR(6) NOT NULL, PRIMARY KEY (vote_id) );`
   );
-  console.log("Ensured that table 'komentar' exists");
+  console.log("Ensured that table 'votes' exists");
 };
 
 const createPoolAndEnsureSchema = async () =>
@@ -150,12 +150,12 @@ const httpGet = app.get('/', async (req, res) => {
   try {
     // Get the 5 most recent votes.
     const recentVotesQuery = pool.query(
-      'SELECT candidate, time_cast, nama, komentar FROM komentar ORDER BY time_cast DESC LIMIT 5'
+      'SELECT candidate, time_cast FROM votes ORDER BY time_cast DESC LIMIT 5'
     );
 
     // Get votes
-    const stmt = 'SELECT * FROM komentar';
-    const spacesQuery = pool.query(stmt);
+    const stmt = 'SELECT COUNT(vote_id) as count FROM votes WHERE candidate=?';
+    const spacesQuery = pool.query(stmt, ['SPACES']);
 
     // Run queries concurrently, and wait for them to complete
     // This is faster than await-ing each query object as it is created
@@ -180,8 +180,6 @@ const httpGet = app.get('/', async (req, res) => {
 // Handle incoming vote requests and inserting them into the database.
 const httpPost = app.post('*', async (req, res) => {
   const {team} = req.body;
-  const {nama} = req.body;
-  const {komentar} = req.body;
   const timestamp = new Date();
 
   if (!team || (team !== 'TABS' && team !== 'SPACES')) {
@@ -191,10 +189,10 @@ const httpPost = app.post('*', async (req, res) => {
   pool = pool || (await createPoolAndEnsureSchema());
   // [START cloud_sql_mysql_mysql_connection]
   try {
-    const stmt = 'INSERT INTO komentar (time_cast, candidate, nama, komentar) VALUES (?, ?, ?, ?)';
+    const stmt = 'INSERT INTO votes (time_cast, candidate) VALUES (?, ?)';
     // Pool.query automatically checks out, uses, and releases a connection
     // back into the pool, ensuring it is always returned successfully.
-    await pool.query(stmt, [timestamp, team, nama, komentar]);
+    await pool.query(stmt, [timestamp, team]);
   } catch (err) {
     // If something goes wrong, handle the error in this section. This might
     // involve retrying or adjusting parameters depending on the situation.
@@ -210,7 +208,7 @@ const httpPost = app.post('*', async (req, res) => {
   }
   // [END cloud_sql_mysql_mysql_connection]
 
-  res.status(200).send(`Sukses memberikan komentar ${team} di ${timestamp} nama ${nama} komentar ${komentar}`).end();
+  res.status(200).send(`Sukses memberikan komentar ${team} di ${timestamp}`).end();
 });
 
 /**
