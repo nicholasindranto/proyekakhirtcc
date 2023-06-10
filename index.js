@@ -208,7 +208,7 @@ const httpPost = app.post('*', async (req, res) => {
   }
   // [END cloud_sql_mysql_mysql_connection]
 
-  res.status(200).send(`Successfully voted for ${team} at ${timestamp}`).end();
+  res.status(200).send(`Sukses memberikan komentar ${team} di ${timestamp}`).end();
 });
 
 /**
