@@ -150,20 +150,23 @@ const httpGet = app.get('/', async (req, res) => {
   try {
     // Get the 5 most recent votes.
     const recentVotesQuery = pool.query(
-      'SELECT candidate, time_cast FROM votes ORDER BY time_cast DESC'
+      'SELECT candidate, time_cast FROM votes ORDER BY time_cast DESC LIMIT 5'
     );
 
     // Get votes
     const stmt = 'SELECT COUNT(vote_id) as count FROM votes WHERE candidate=?';
+    const tabsQuery = pool.query(stmt, ['TABS']);
     const spacesQuery = pool.query(stmt, ['SPACES']);
 
     // Run queries concurrently, and wait for them to complete
     // This is faster than await-ing each query object as it is created
     const recentVotes = await recentVotesQuery;
+    const [tabsVotes] = await tabsQuery;
     const [spacesVotes] = await spacesQuery;
 
     res.render('index.pug', {
       recentVotes,
+      tabCount: tabsVotes.count,
       spaceCount: spacesVotes.count,
     });
   } catch (err) {
@@ -208,7 +211,7 @@ const httpPost = app.post('*', async (req, res) => {
   }
   // [END cloud_sql_mysql_mysql_connection]
 
-  res.status(200).send(`Sukses memberikan komentar ${team} di ${timestamp}`).end();
+  res.status(200).send(`Successfully voted for ${team} at ${timestamp}`).end();
 });
 
 /**
