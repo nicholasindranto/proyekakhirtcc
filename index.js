@@ -150,7 +150,7 @@ const httpGet = app.get('/', async (req, res) => {
   try {
     // Get the 5 most recent votes.
     const recentVotesQuery = pool.query(
-      'SELECT candidate, time_cast FROM votes ORDER BY time_cast DESC LIMIT 5'
+      'SELECT candidate, time_cast FROM votes ORDER BY time_cast DESC'
     );
 
     // Get votes
@@ -214,6 +214,106 @@ const httpPost = app.post('*', async (req, res) => {
   res.status(200).send(`Successfully voted for ${team} at ${timestamp}`).end();
 });
 
+const httpChangeTabs = app.post('*', async (req, res) => {
+  const {id} = req.body;
+  const team = "TABS";
+  const timestamp = new Date();
+
+  if (!team || (team !== 'TABS' && team !== 'SPACES')) {
+    return res.status(400).send('Invalid team specified.').end();
+  }
+
+  pool = pool || (await createPoolAndEnsureSchema());
+  // [START cloud_sql_mysql_mysql_connection]
+  try {
+    const stmt = 'UPDATE votes SET time_cast=?, candidate=? WHERE vote_id=?';
+    // Pool.query automatically checks out, uses, and releases a connection
+    // back into the pool, ensuring it is always returned successfully.
+    await pool.query(stmt, [timestamp, team, id]);
+  } catch (err) {
+    // If something goes wrong, handle the error in this section. This might
+    // involve retrying or adjusting parameters depending on the situation.
+    // [START_EXCLUDE]
+    logger.error(err);
+    return res
+      .status(500)
+      .send(
+        'Unable to successfully cast vote! Please check the application logs for more details.'
+      )
+      .end();
+    // [END_EXCLUDE]
+  }
+  // [END cloud_sql_mysql_mysql_connection]
+
+  res.status(200).send(`Successfully change voted for ${team} at ${timestamp} with id ${id}`).end();
+});
+
+const httpChangeSpaces = app.post('*', async (req, res) => {
+  const {id} = req.body;
+  const team = "SPACES";
+  const timestamp = new Date();
+
+  if (!team || (team !== 'TABS' && team !== 'SPACES')) {
+    return res.status(400).send('Invalid team specified.').end();
+  }
+
+  pool = pool || (await createPoolAndEnsureSchema());
+  // [START cloud_sql_mysql_mysql_connection]
+  try {
+    const stmt = 'UPDATE votes SET time_cast=?, candidate=? WHERE vote_id=?';
+    // Pool.query automatically checks out, uses, and releases a connection
+    // back into the pool, ensuring it is always returned successfully.
+    await pool.query(stmt, [timestamp, team, id]);
+  } catch (err) {
+    // If something goes wrong, handle the error in this section. This might
+    // involve retrying or adjusting parameters depending on the situation.
+    // [START_EXCLUDE]
+    logger.error(err);
+    return res
+      .status(500)
+      .send(
+        'Unable to successfully cast vote! Please check the application logs for more details.'
+      )
+      .end();
+    // [END_EXCLUDE]
+  }
+  // [END cloud_sql_mysql_mysql_connection]
+
+  res.status(200).send(`Successfully change voted for ${team} at ${timestamp} with id ${id}`).end();
+});
+
+const httpDelete = app.post('*', async (req, res) => {
+  const {id} = req.body;
+
+  if (!team || (team !== 'TABS' && team !== 'SPACES')) {
+    return res.status(400).send('Invalid team specified.').end();
+  }
+
+  pool = pool || (await createPoolAndEnsureSchema());
+  // [START cloud_sql_mysql_mysql_connection]
+  try {
+    const stmt = 'DELETE FROM votes WHERE vote_id=?';
+    // Pool.query automatically checks out, uses, and releases a connection
+    // back into the pool, ensuring it is always returned successfully.
+    await pool.query(stmt, [id]);
+  } catch (err) {
+    // If something goes wrong, handle the error in this section. This might
+    // involve retrying or adjusting parameters depending on the situation.
+    // [START_EXCLUDE]
+    logger.error(err);
+    return res
+      .status(500)
+      .send(
+        'Unable to successfully cast vote! Please check the application logs for more details.'
+      )
+      .end();
+    // [END_EXCLUDE]
+  }
+  // [END cloud_sql_mysql_mysql_connection]
+
+  res.status(200).send(`Successfully delete voted with id ${id}`).end();
+});
+
 /**
  * Responds to GET and POST requests for TABS vs SPACES sample app.
  *
@@ -227,6 +327,15 @@ exports.votes = (req, res) => {
       break;
     case 'POST':
       httpPost(req, res);
+      break;
+    case 'CHANGETABS':
+      httpChangeTabs(req, res);
+      break;
+    case 'CHANGESPACES':
+      httpChangeSpaces(req, res);
+      break;
+    case 'DELETE':
+      httpDelete(req, res);
       break;
     default:
       res.status(405).send({error: 'Something blew up!'});
