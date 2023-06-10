@@ -150,7 +150,7 @@ const httpGet = app.get('/', async (req, res) => {
   try {
     // Get the 5 most recent votes.
     const recentVotesQuery = pool.query(
-      'SELECT candidate, time_cast FROM votes ORDER BY time_cast DESC LIMIT 5'
+      'SELECT candidate, time_cast FROM votes ORDER BY time_cast DESC'
     );
 
     // Get votes
