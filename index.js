@@ -154,8 +154,8 @@ const httpGet = app.get('/', async (req, res) => {
     );
 
     // Get votes
-    const stmt = 'SELECT * FROM votes';
-    const spacesQuery = pool.query(stmt);
+    const stmt = 'SELECT COUNT(vote_id) as count FROM votes WHERE candidate=?';
+    const spacesQuery = pool.query(stmt, ['SPACES']);
 
     // Run queries concurrently, and wait for them to complete
     // This is faster than await-ing each query object as it is created
