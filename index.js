@@ -214,7 +214,7 @@ const httpPost = app.post('*', async (req, res) => {
   res.status(200).send(`Successfully voted for ${team} at ${timestamp}`).end();
 });
 
-const httpChangeTabs = app.post('*', async (req, res) => {
+/*const httpChangeTabs = app.post('*', async (req, res) => {
   const {id} = req.body;
   const team = "TABS";
   const timestamp = new Date();
@@ -312,7 +312,7 @@ const httpDelete = app.post('*', async (req, res) => {
   // [END cloud_sql_mysql_mysql_connection]
 
   res.status(200).send(`Successfully delete voted with id ${id}`).end();
-});
+});*/
 
 /**
  * Responds to GET and POST requests for TABS vs SPACES sample app.
@@ -328,7 +328,7 @@ exports.votes = (req, res) => {
     case 'POST':
       httpPost(req, res);
       break;
-    case 'CHANGETABS':
+    /*case 'CHANGETABS':
       httpChangeTabs(req, res);
       break;
     case 'CHANGESPACES':
@@ -336,7 +336,7 @@ exports.votes = (req, res) => {
       break;
     case 'DELETE':
       httpDelete(req, res);
-      break;
+      break;*/
     default:
       res.status(405).send({error: 'Something blew up!'});
       break;

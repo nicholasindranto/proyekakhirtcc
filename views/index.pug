@@ -63,7 +63,7 @@ html(lang="en")
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send("team=" + team);
       }
-      function changeTabs(id) {
+      /*function changeTabs(id) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
           var msg = "";
@@ -98,19 +98,19 @@ html(lang="en")
         xhr.open("DELETE", "/votes", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send("id=" + id);
-      }
+      }*/
       document.getElementById("voteTabs").addEventListener("click", function () {
         vote("TABS");
       });
       document.getElementById("voteSpaces").addEventListener("click", function () {
         vote("SPACES");
       });
-      document.getElementById("changeTabs").addEventListener("click", function () {
-        //changeTabs(vote.vote_id);
+      /*document.getElementById("changeTabs").addEventListener("click", function () {
+        changeTabs(vote.vote_id);
       });
       document.getElementById("changeSpaces").addEventListener("click", function () {
-        //changeSpaces(vote.vote_id);
+        changeSpaces(vote.vote_id);
       });
       document.getElementById("delete").addEventListener("click", function () {
-        //delete(vote.vote_id);
-      });
+        delete(vote.vote_id);
+      });*/
