@@ -46,9 +46,6 @@ html(lang="en")
               i(class="material-icons circle blue") space_bar
             span(class="title") A vote for <b>#{vote.candidate}</b>
             p was cast at #{vote.time_cast}.
-            button(id="changeSpaces" class="btn blue") Change for SPACES
-            button(id="changeTabs" class="btn green") Change for TABS
-            button(id="deleteVoting" class="btn red") Delete
 
     script.
       function vote(team) {
@@ -63,42 +60,9 @@ html(lang="en")
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send("team=" + team);
       }
-      /*function change(id, team) {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-          var msg = "";
-          if (this.readyState == 4) {
-            window.location.reload();
-          }
-        };
-        xhr.open("CHANGE", "/votes", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send("id=" + id, "team=" + team);
-      }*/
-      function deleteVote(id) {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-          var msg = "";
-          if (this.readyState == 4) {
-            window.location.reload();
-          }
-        };
-        xhr.open("DELETE", "/" + id, true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send("id=" + id);
-      }
-      document.getElementById("voteTabs").addEventListener("click", function () {
+       document.getElementById("voteTabs").addEventListener("click", function () {
         vote("TABS");
       });
       document.getElementById("voteSpaces").addEventListener("click", function () {
         vote("SPACES");
-      });
-      /*document.getElementById("changeTabs").addEventListener("click", function () {
-        change(vote.vote_id, "TABS");
-      });
-      document.getElementById("changeSpaces").addEventListener("click", function () {
-        change(vote.vote_id, "SPACES");
-      });*/
-      document.getElementById("deleteVoting").addEventListener("click", function () {
-        deleteVote(vote.vote_id);
       });
