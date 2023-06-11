@@ -295,7 +295,7 @@ exports.votes = (req, res) => {
       httpPost(req, res);
       break;
     /*case 'CHANGE':
-      httpChangeTabs(req, res);
+      httpPut(req, res);
       break;*/
     case 'DELETE':
       httpDelete(req, res);

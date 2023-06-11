@@ -76,6 +76,7 @@ html(lang="en")
         xhr.send("id=" + id, "team=" + team);
       }*/
       function deleteVote(id) {
+        console.log(id);
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
           var msg = "";
