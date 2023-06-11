@@ -85,7 +85,7 @@ html(lang="en")
         };
         xhr.open("DELETE", "/" + id, true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send("id=" + id);
+        //xhr.send("id=" + id);
       }
       document.getElementById("voteTabs").addEventListener("click", function () {
         vote("TABS");
