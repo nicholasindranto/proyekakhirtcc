@@ -63,7 +63,7 @@ html(lang="en")
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send("team=" + team);
       }
-      /*function changeTabs(id) {
+      /*function change(id, team) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
           var msg = "";
@@ -71,23 +71,11 @@ html(lang="en")
             window.location.reload();
           }
         };
-        xhr.open("CHANGETABS", "/votes", true);
+        xhr.open("CHANGE", "/votes", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send("id=" + id);
-      }
-      function changeSpaces(id) {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-          var msg = "";
-          if (this.readyState == 4) {
-            window.location.reload();
-          }
-        };
-        xhr.open("CHANGESPACES", "/votes", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send("id=" + id);
-      }
-      function delete(id) {
+        xhr.send("id=" + id, "team=" + team);
+      }*/
+      function deleteVote(id) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
           var msg = "";
@@ -98,7 +86,7 @@ html(lang="en")
         xhr.open("DELETE", "/votes", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send("id=" + id);
-      }*/
+      }
       document.getElementById("voteTabs").addEventListener("click", function () {
         vote("TABS");
       });
@@ -106,11 +94,11 @@ html(lang="en")
         vote("SPACES");
       });
       /*document.getElementById("changeTabs").addEventListener("click", function () {
-        changeTabs(vote.vote_id);
+        change(vote.vote_id, "TABS");
       });
       document.getElementById("changeSpaces").addEventListener("click", function () {
-        changeSpaces(vote.vote_id);
-      });
-      document.getElementById("delete").addEventListener("click", function () {
-        delete(vote.vote_id);
+        change(vote.vote_id, "SPACES");
       });*/
+      document.getElementById("delete").addEventListener("click", function () {
+        deleteVote(vote.vote_id);
+      });
