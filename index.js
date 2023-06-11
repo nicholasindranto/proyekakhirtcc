@@ -249,7 +249,7 @@ const httpPost = app.post('*', async (req, res) => {
 });*/
 
 const httpDelete = app.delete('/votes/:vote_id', async (req, res) => {
-  const {id} = req.params.vote_id;
+  const id = req.params.vote_id;
 
   /*if (!team || (team !== 'TABS' && team !== 'SPACES')) {
     return res.status(400).send('Invalid team specified.').end();
