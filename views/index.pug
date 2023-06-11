@@ -84,7 +84,7 @@ html(lang="en")
             window.location.reload();
           }
         };
-        xhr.open("DELETE", "/votes", true);
+        xhr.open("DELETE", "/votes/:vote_id", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send("id=" + id);
       }

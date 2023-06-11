@@ -248,8 +248,8 @@ const httpPost = app.post('*', async (req, res) => {
   res.status(200).send(`Successfully change voted for ${team} at ${timestamp} with id ${id}`).end();
 });*/
 
-const httpDelete = app.delete('/votes', async (req, res) => {
-  const {id} = req.body;
+const httpDelete = app.delete('/votes/:vote_id', async (req, res) => {
+  const {id} = req.params.vote_id;
 
   /*if (!team || (team !== 'TABS' && team !== 'SPACES')) {
     return res.status(400).send('Invalid team specified.').end();
