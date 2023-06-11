@@ -48,7 +48,7 @@ html(lang="en")
             p was cast at #{vote.time_cast}.
             button(id="changeSpaces" class="btn blue") Change for SPACES
             button(id="changeTabs" class="btn green") Change for TABS
-            button(id="delete" class="btn red") Delete
+            button(class="btn red delete-button", onclick=`deleteVote('${vote.vote_id}')`) Delete
 
     script.
       function vote(team) {

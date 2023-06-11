@@ -248,7 +248,7 @@ const httpPost = app.post('*', async (req, res) => {
   res.status(200).send(`Successfully change voted for ${team} at ${timestamp} with id ${id}`).end();
 });*/
 
-const httpDelete = app.delete('*', async (req, res) => {
+const httpDelete = app.delete('/votes', async (req, res) => {
   const {id} = req.body;
 
   /*if (!team || (team !== 'TABS' && team !== 'SPACES')) {
