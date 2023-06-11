@@ -48,7 +48,7 @@ html(lang="en")
             p was cast at #{vote.time_cast}.
             button(id="changeSpaces" class="btn blue") Change for SPACES
             button(id="changeTabs" class="btn green") Change for TABS
-            button(onclick="deleteVote(${vote.vote_id})" class="btn red") Delete
+            button(id="deleteVoting" class="btn red") Delete
 
     script.
       function vote(team) {
@@ -75,7 +75,7 @@ html(lang="en")
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send("id=" + id, "team=" + team);
       }*/
-      /*function deleteVote(id) {
+      function deleteVote(id) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
           var msg = "";
@@ -83,20 +83,9 @@ html(lang="en")
             window.location.reload();
           }
         };
-        xhr.open("DELETE", "/votes/" + id, true);
+        xhr.open("DELETE", "/" + id, true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send(JSON.stringify({ id: id }));
-      }*/
-      function deleteVote(id) {
-        fetch(`/votes/${id}`, {
-          method: 'DELETE'
-        })
-          .then(response => response.text())
-          .then(message => {
-            console.log(message);
-            //loadData();
-          })
-          .catch(error => console.error('Kesalahan saat menghapus data:', error));
+        xhr.send("id=" + id);
       }
       document.getElementById("voteTabs").addEventListener("click", function () {
         vote("TABS");
@@ -109,7 +98,7 @@ html(lang="en")
       });
       document.getElementById("changeSpaces").addEventListener("click", function () {
         change(vote.vote_id, "SPACES");
-      });
+      });*/
       document.getElementById("deleteVoting").addEventListener("click", function () {
         deleteVote(vote.vote_id);
-      });*/
+      });
